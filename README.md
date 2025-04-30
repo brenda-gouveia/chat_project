@@ -11,7 +11,7 @@ This project was created with the main goal of **learning and applying container
 It combines a **frontend served by Apache HTTP Server** and a **Node.js backend** powered by **Express** and **Socket.IO** for WebSocket-based communication. Docker containers isolate and manage both services, ensuring consistency, portability, and ease of deployment.
 
 <p align="center">
-  <img src="images/chat_denis_brenda.png" alt="my chat project" width="200"/>
+  <img src="images/chat_denis_brenda.png" alt="chat project UI" width="600"/>
 </p>
 
 ## 📦 Technologies Used
@@ -24,8 +24,12 @@ It combines a **frontend served by Apache HTTP Server** and a **Node.js backend*
 ## ⚙️ Architecture Overview
 
 <p align="center">
-  <img src="images/config.png" alt="architecture overview" width="100"/>
+  <img src="images/config.png" alt="architecture overview" width="400"/>
 </p>
+
+- The **Apache container** serves the static frontend files on port **8080**.
+- The **Node.js container** runs a Socket.IO server on port **3000**, handling real-time communication with clients.
+- Communication between containers is managed via Docker’s internal network.
 
 
 ## 🚀 Getting Started
