@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Chat Real-time</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      background-color: #f4f4f9;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      flex-direction: column;
+    }
+    
+    input, button {
+      width: 250px; /* Maior largura para melhor visualização */
+    }
+    input {
+      padding: 10px;
+      margin: 5px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      width: 200px;
+    }
+    button {
+      padding: 10px 20px;
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    #chat {
+      list-style-type: none;
+      padding: 0;
+      margin-top: 20px;
+      max-width: 400px;
+      width: 100%;
+      overflow-y: auto;
+    }
+    #chat li {
+      padding: 10px;
+      margin-bottom: 5px;
+      border-radius: 5px;
+      max-width: 70%;
+      word-wrap: break-word;
+    }
+    .my-message {
+      background-color: #d1ecf1;
+      text-align: right;
+      margin-left: auto;
+    }
+    .other-message {
+      background-color: #ffffff;
+      text-align: left;
+      margin-right: auto;
+    }
+    button {
+      cursor: pointer;}
+  </style>
+</head>
+<body>
+  <input id="username" placeholder="Username"><br>
+  <input id="message" placeholder="Message">
+  <button onclick="sendMessage()">Send</button>
+  <ul id="chat"></ul>
+
+  <script>
+    const socket = io('http://192.168.0.104:3000'); // Adjust URL as needed
+
+    function sendMessage() {
+      const user = document.getElementById('username').value || "Anônimo";
+      const msg = document.getElementById('message').value;
+      socket.emit('chat message', { user, msg });
+      appendMessage(user, msg, true); // Show my own message immediately
+    }
+
+    socket.on('chat message', ({ user, msg }) => {
+      const currentUser = document.getElementById('username').value;
+      const isMyMessage = user === currentUser;
+      if (!isMyMessage) appendMessage(user, msg, false);
+    });
+
+    function appendMessage(user, msg, isMine) {
+      const li = document.createElement('li');
+      li.textContent = `${user}: ${msg}`;
+      li.className = isMine ? 'my-message' : 'other-message';
+      document.getElementById('chat').appendChild(li);
+    }
+  </script>
+</body>
+</html>

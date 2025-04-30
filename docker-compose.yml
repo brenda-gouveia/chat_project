@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend       # <- aponta para a pasta onde está o Dockerfile
+      dockerfile: Dockerfile   # <- nome do Dockerfile (padrão é "Dockerfile", então pode até omitir)
+    container_name: node-backend
+    ports:
+      - "3000:3000"
+    working_dir: /app
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    networks:
+      - app-network
+  apache:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: apache-server
+    ports:
+      - "8080:80"
+#    volumes:
+#      - ./frontend/publica:/usr/local/apache2/htdocs
+#      - ./frontend/apache_cors/proxy.conf:/usr/local/apache2/conf/extra/proxy.conf
+    depends_on:
+      - backend
+    networks:
+      - app-network
+networks:
+  app-network:
+    driver: bridge
