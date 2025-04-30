@@ -6,9 +6,12 @@
 [![Author](https://img.shields.io/badge/author-Brenda%20Gouveia-blueviolet)](https://github.com/brenda-gouveia)
 
 
-This project was created with the main goal of **learning and applying containerization using Docker** to integrate a real-time application with separated frontend and backend environments.
+This project was developed as part of my journey into **containerization and multi-service architecture**. The main objective is to build a real-time chat application using **Docker**, integrating a **frontend served by Apache HTTP Server** and a **Node.js backend** powered by **Express** and **Socket.IO**.
 
-It combines a **frontend served by Apache HTTP Server** and a **Node.js backend** powered by **Express** and **Socket.IO** for WebSocket-based communication. Docker containers isolate and manage both services, ensuring consistency, portability, and ease of deployment.
+A key architectural choice in this project is the use of **Apache not only to serve static frontend files**, but also as a **reverse proxy** that forwards requests to the backend, enabling communication between the client and server while handling CORS and routing transparently.
+
+Each service runs in its own container, following Docker best practices for isolation, portability, and scalability.
+
 
 <p align="center">
   <img src="images/chat_denis_brenda.png" alt="chat project UI" width="600"/>
@@ -31,13 +34,32 @@ It combines a **frontend served by Apache HTTP Server** and a **Node.js backend*
 - The **Node.js container** runs a Socket.IO server on port **3000**, handling real-time communication with clients.
 - Communication between containers is managed via Docker’s internal network.
 
+## 📁 Project Structure
 
+```bash
+project-root/
+├── backend/                   # Node.js + Express + Socket.IO backend
+│   ├── index.js               # Main backend entry point
+│   ├── ...                    # Other backend logic and dependencies
+│   └── Dockerfile
+├── frontend/                  # Static frontend files (HTML, JS, CSS)
+│   ├── index.html             # Main HTML file
+│   ├── publica/               # JavaScript and CSS assets
+│   |   └── index.html 
+|   ├── apache_cors/               # Apache configuration files
+│   │   ├── my_httpd.conf          # Custom Apache HTTPD config
+│   │   └── proxy.conf             # Proxy and CORS settings
+│   └── Dockerfile
+├── docker-compose.yml         # Docker Compose configuration
+├── README.md                  # Project documentation
+└── Dockerfile                 # Apache Dockerfile (could also be in its own folder)
+```
 ## 🚀 Getting Started
 
 1. Clone the repository
 2. Run `docker-compose up --build`
 3. Access `http://localhost:8080` in your browser
-   
+
 ## 🛠️ Future Improvements
 
 This is the **first version** of the project. Future updates may include:
